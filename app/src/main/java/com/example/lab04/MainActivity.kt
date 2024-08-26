@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
@@ -127,12 +129,38 @@ fun CardExample() {
 fun CheckboxExample() {
     var checked by remember { mutableStateOf(false) }
 
-    Row(modifier = Modifier.padding(16.dp)) {
+    Row(
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+            .background(
+                color = if (checked) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                else MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .border(
+                width = 2.dp,
+                color = if (checked) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(12.dp)
+    ) {
         Checkbox(
             checked = checked,
-            onCheckedChange = { checked = it }
+            onCheckedChange = { checked = it },
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colorScheme.primary,
+                uncheckedColor = MaterialTheme.colorScheme.onBackground,
+                checkmarkColor = MaterialTheme.colorScheme.onPrimary
+            )
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text("Check me")
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = if (checked) "Checked" else "Check me",
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+            color = if (checked) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onBackground
+        )
     }
 }
